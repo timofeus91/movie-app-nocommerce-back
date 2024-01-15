@@ -4,11 +4,13 @@ import { firstValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { plainToClass, plainToInstance } from 'class-transformer';
+import { GenresSeriesDataDto } from './dto/GenresSeriesData.dto';
+import { validate } from 'class-validator';
 
 @Injectable()
 export class GenresService {
   constructor(
-    private errorHandlers: OutgoingRequestErrorHandlerService,
     private httpService: HttpService,
     private configService: ConfigService,
   ) {}
@@ -23,24 +25,23 @@ export class GenresService {
   }
 
   async getSeriesGenres() {
-    try {
-      const response = await firstValueFrom(
-        this.httpService.get('https://api.themoviedb.org/3/genre/tv/list', {
-          headers: this.headersForRequest(),
-        }),
-      );
+    const response = await firstValueFrom(
+      this.httpService.get('https://api.themoviedb.org/3/genre/tv/list', {
+        headers: this.headersForRequest(),
+      }),
+    );
+    console.log(response);
+    console.log(response.data);
 
-      console.log(response.data);
-    } catch (err) {
-      this.errorHandlers.handleError(err);
+    const genresData = plainToInstance(GenresSeriesDataDto, response.data);
+    const errors = await validate(genresData);
+    if (errors.length > 0) {
+      throw new Error('Validation failed!');
     }
+    console.log(genresData);
+    return genresData;
   }
 
-  @Cron(CronExpression.EVERY_MINUTE)
-  async handleCron() {
-    console.log('пошло');
-    await this.getSeriesGenres();
-  }
 
   async getMoviesGenres() {}
 }
