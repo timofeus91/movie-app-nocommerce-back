@@ -7,7 +7,8 @@ import { GroupRandomizerWebSocketModuleModule } from './modules/group-randomizer
 import { MovieDbApiModule } from './modules/movie-db-api-module/movie-db-api.module';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
-import { GeneralModuleModule } from './general-module/general-module.module';
+import { GeneralModule } from './general-module/general.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -17,7 +18,11 @@ import { GeneralModuleModule } from './general-module/general-module.module';
     MovieDbApiModule,
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),
-    GeneralModuleModule,
+    GeneralModule,
+    CacheModule.register({
+      ttl: 15 * 60 * 1000,
+      max: 30,
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

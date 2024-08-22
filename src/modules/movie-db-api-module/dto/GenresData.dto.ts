@@ -1,10 +1,10 @@
 import { Type } from 'class-transformer';
 import { IsArray, ValidateNested } from 'class-validator';
-import { GenreSeriesDto } from './GenreSeries.dto';
+import { GenreItemDto } from './GenreItem.dto';
 
-export class GenresSeriesDataDto {
+export class GenresDataDto {
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => GenreSeriesDto)
-  genres: GenreSeriesDto[];
+  @Type(() => GenreItemDto)
+  genres: GenreItemDto[];
 }

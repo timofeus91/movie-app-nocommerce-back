@@ -7,7 +7,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { SearchCriteriaDto } from './dto/search-criteria.dto';
-import { GenresCashService } from '../movie-db-api-module/genresCash.service';
+import { GenresCashService } from '../movie-db-api-module/services/genresCash.service';
 
 @Controller('search-module')
 export class SearchModuleController {
