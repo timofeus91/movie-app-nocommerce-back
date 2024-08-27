@@ -7,7 +7,7 @@ import { GroupRandomizerWebSocketModuleModule } from './modules/group-randomizer
 import { MovieDbApiModule } from './modules/movie-db-api-module/movie-db-api.module';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
-import { GeneralModule } from './general-module/general.module';
+import { GeneralModule } from './modules/general-module/general.module';
 import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
