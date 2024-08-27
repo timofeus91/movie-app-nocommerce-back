@@ -45,4 +45,23 @@ export class GeneralController {
       console.log(err);
     }
   }
+
+  @Get('countries')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Get countries list' })
+  @ApiQuery({
+    name: 'language',
+    required: true,
+    description: 'Language code',
+    type: String,
+  })
+  async getCountriesList(
+    @Query(QUERY_PARAMS.QUERY_PARAM_LANGUAGE) language: string,
+  ) {
+    try {
+      return await this.generalService.getCountriesList(language);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
