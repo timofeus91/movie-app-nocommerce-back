@@ -20,11 +20,7 @@ export class GeneralController {
   async getGenresSeries(
     @Query(QUERY_PARAMS.QUERY_PARAM_LANGUAGE) language: string,
   ) {
-    try {
-      return await this.generalService.getGenresSeries(language);
-    } catch (err) {
-      console.log(err);
-    }
+    return await this.generalService.getGenresSeries(language);
   }
 
   @Get('series-movies')
@@ -39,11 +35,7 @@ export class GeneralController {
   async getGenresMovies(
     @Query(QUERY_PARAMS.QUERY_PARAM_LANGUAGE) language: string,
   ) {
-    try {
-      return await this.generalService.getGenresMovies(language);
-    } catch (err) {
-      console.log(err);
-    }
+    return await this.generalService.getGenresMovies(language);
   }
 
   @Get('countries')
@@ -58,10 +50,6 @@ export class GeneralController {
   async getCountriesList(
     @Query(QUERY_PARAMS.QUERY_PARAM_LANGUAGE) language: string,
   ) {
-    try {
-      return await this.generalService.getCountriesList(language);
-    } catch (err) {
-      console.log(err);
-    }
+    return await this.generalService.getCountriesList(language);
   }
 }
