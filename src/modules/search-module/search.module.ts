@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { SearchModuleController } from './search-module.controller';
+import { SearchController } from './search.controller';
 import { MovieDbApiModule } from '../movie-db-api-module/movie-db-api.module';
 
 @Module({
-  controllers: [SearchModuleController],
+  controllers: [SearchController],
   imports: [MovieDbApiModule],
 })
-export class SearchModuleModule {}
+export class SearchModule {}

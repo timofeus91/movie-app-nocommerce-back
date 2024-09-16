@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { MovieDbApiService } from './movie-db-api.service';
+import { GeneralService } from './general.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { GenresDataDto } from '../dto/GenresData.dto';
 import { CountryItemDto } from '../dto/CountryItem.dto';
 
 @Injectable()
-export class MovieDbApiCashService {
+export class GeneralCashService {
   constructor(
-    private movieDBApi: MovieDbApiService,
+    private movieDBApi: GeneralService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 

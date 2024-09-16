@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
-import { MovieDbApiService } from './services/movie-db-api.service';
+import { GeneralService } from './services/general.service';
 import { HttpModule } from '@nestjs/axios';
-import { MovieDbApiCashService } from './services/movie-db-api-cash.service';
+import { GeneralCashService } from './services/general-cash.service';
 import { CacheModule } from '@nestjs/cache-manager';
+import { CommonService } from './services/common.service';
+import { MovieService } from './services/movie.service';
 
 @Module({
   imports: [HttpModule, CacheModule.register()],
-  providers: [MovieDbApiService, MovieDbApiCashService],
-  exports: [MovieDbApiService, MovieDbApiCashService],
+  providers: [GeneralService, GeneralCashService, CommonService, MovieService],
+  exports: [GeneralService, GeneralCashService, MovieService],
 })
 export class MovieDbApiModule {}

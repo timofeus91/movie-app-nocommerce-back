@@ -7,11 +7,11 @@ import {
   Post,
 } from '@nestjs/common';
 import { SearchCriteriaDto } from './dto/search-criteria.dto';
-import { MovieDbApiCashService } from '../movie-db-api-module/services/movie-db-api-cash.service';
+import { GeneralCashService } from '../movie-db-api-module/services/general-cash.service';
 
 @Controller('search-module')
-export class SearchModuleController {
-  constructor(private genresCashService: MovieDbApiCashService) {}
+export class SearchController {
+  constructor(private genresCashService: GeneralCashService) {}
 
   @Post('execute-search')
   @HttpCode(HttpStatus.OK)

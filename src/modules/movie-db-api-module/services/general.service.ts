@@ -1,42 +1,25 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
-import { ConfigService } from '@nestjs/config';
 import { plainToInstance } from 'class-transformer';
 import { GenresDataDto } from '../dto/GenresData.dto';
-import { validate, ValidationError } from 'class-validator';
+import { validate } from 'class-validator';
 import { CountryItemDto } from '../dto/CountryItem.dto';
+import { CommonService } from './common.service';
 
 @Injectable()
-export class MovieDbApiService {
+export class GeneralService {
   constructor(
+    private _commonService: CommonService,
     private httpService: HttpService,
-    private configService: ConfigService,
   ) {}
-
-  private headersForRequest() {
-    const token = this.configService.get<string>('API_READ_ACCESS_TOKEN');
-    const headers = {
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-    };
-    return headers;
-  }
-
-  private formatValidationErrors(errors: ValidationError[]): string {
-    return errors
-      .map((error) => {
-        return Object.values(error.constraints).join(', ');
-      })
-      .join('; ');
-  }
 
   async getSeriesGenresList(language: string): Promise<GenresDataDto> {
     const response = await firstValueFrom(
       this.httpService.get(
         `https://api.themoviedb.org/3/genre/tv/list?language=${language}`,
         {
-          headers: this.headersForRequest(),
+          headers: this._commonService.headersForRequest(),
         },
       ),
     );
@@ -44,7 +27,7 @@ export class MovieDbApiService {
     const seriesGenresData = plainToInstance(GenresDataDto, response.data);
     const errors = await validate(seriesGenresData);
     if (errors.length > 0) {
-      const errorMessages = this.formatValidationErrors(errors);
+      const errorMessages = this._commonService.formatValidationErrors(errors);
       throw new BadRequestException(`Validation failed: ${errorMessages}`);
     }
     return seriesGenresData;
@@ -55,7 +38,7 @@ export class MovieDbApiService {
       this.httpService.get(
         `https://api.themoviedb.org/3/genre/movie/list?language=${language}`,
         {
-          headers: this.headersForRequest(),
+          headers: this._commonService.headersForRequest(),
         },
       ),
     );
@@ -63,7 +46,7 @@ export class MovieDbApiService {
     const moviesGenresData = plainToInstance(GenresDataDto, response.data);
     const errors = await validate(moviesGenresData);
     if (errors.length > 0) {
-      const errorMessages = this.formatValidationErrors(errors);
+      const errorMessages = this._commonService.formatValidationErrors(errors);
       throw new BadRequestException(`Validation failed: ${errorMessages}`);
     }
     return moviesGenresData;
@@ -74,7 +57,7 @@ export class MovieDbApiService {
       this.httpService.get(
         `https://api.themoviedb.org/3/configuration/countries?language=${language}`,
         {
-          headers: this.headersForRequest(),
+          headers: this._commonService.headersForRequest(),
         },
       ),
     );
@@ -91,7 +74,8 @@ export class MovieDbApiService {
     }
 
     if (allErrors.length > 0) {
-      const errorMessages = this.formatValidationErrors(allErrors);
+      const errorMessages =
+        this._commonService.formatValidationErrors(allErrors);
       throw new BadRequestException(`Validation failed: ${errorMessages}`);
     }
 
