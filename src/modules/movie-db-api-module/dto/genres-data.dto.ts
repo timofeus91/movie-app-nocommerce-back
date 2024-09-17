@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsArray, ValidateNested } from 'class-validator';
-import { GenreItemDto } from './GenreItem.dto';
-import { ApiProperty } from "@nestjs/swagger";
+import { GenreItemDto } from './genre-item.dto';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class GenresDataDto {
   @ApiProperty({

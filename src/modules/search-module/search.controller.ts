@@ -1,21 +1,23 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
   HttpStatus,
   Post,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
-import { SearchCriteriaDto } from './dto/search-criteria.dto';
-import { GeneralCashService } from '../movie-db-api-module/services/general-cash.service';
+import { MovieSearchDto } from '../common-module/dto/MovieSearch.dto';
+import { MovieService } from '../movie-db-api-module/services/movie.service';
 
-@Controller('search-module')
+@Controller('search')
 export class SearchController {
-  constructor(private genresCashService: GeneralCashService) {}
+  constructor(private _movieService: MovieService) {}
 
-  @Post('execute-search')
+  @Post('movie')
   @HttpCode(HttpStatus.OK)
-  async executeSearch(@Body() searchCriteria: SearchCriteriaDto) {
-    console.log(searchCriteria);
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async movieSearch(@Body() movieSearchDto: MovieSearchDto) {
+    return await this._movieService.getMovieList(movieSearchDto);
   }
 }

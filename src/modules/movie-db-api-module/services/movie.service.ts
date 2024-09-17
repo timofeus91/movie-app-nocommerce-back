@@ -1,100 +1,32 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { ConfigService } from '@nestjs/config';
-import { validate, ValidationError } from 'class-validator';
-import { GenresDataDto } from '../dto/GenresData.dto';
+import { GenresDataDto } from '../dto/genres-data.dto';
 import { firstValueFrom } from 'rxjs';
-import { plainToInstance } from 'class-transformer';
-import { CountryItemDto } from '../dto/CountryItem.dto';
+import { CommonService } from '../../common-module/common.service';
+import { MovieSearchDto } from '../../common-module/dto/MovieSearch.dto';
+import { MoviesSearchResponseDto } from '../../search-module/dto/movies-search-response.dto';
 
 @Injectable()
 export class MovieService {
   constructor(
     private httpService: HttpService,
-    private configService: ConfigService,
+    private _commonService: CommonService,
   ) {}
 
-  private headersForRequest() {
-    const token = this.configService.get<string>('API_READ_ACCESS_TOKEN');
-    const headers = {
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-    };
-    return headers;
-  }
-
-  private formatValidationErrors(errors: ValidationError[]): string {
-    return errors
-      .map((error) => {
-        return Object.values(error.constraints).join(', ');
-      })
-      .join('; ');
-  }
-
-  async getSeriesGenresList(language: string): Promise<GenresDataDto> {
+  async getMovieList(params: MovieSearchDto): Promise<MoviesSearchResponseDto> {
+    const finalParams = this._commonService.cleanObject(params);
     const response = await firstValueFrom(
-      this.httpService.get(
-        `https://api.themoviedb.org/3/genre/tv/list?language=${language}`,
-        {
-          headers: this.headersForRequest(),
-        },
-      ),
+      this.httpService.get(`https://api.themoviedb.org/3/discover/movie`, {
+        params: finalParams,
+        headers: this._commonService.headersForRequest(),
+      }),
     );
 
-    const seriesGenresData = plainToInstance(GenresDataDto, response.data);
-    const errors = await validate(seriesGenresData);
-    if (errors.length > 0) {
-      const errorMessages = this.formatValidationErrors(errors);
-      throw new BadRequestException(`Validation failed: ${errorMessages}`);
-    }
-    return seriesGenresData;
-  }
+    const moviesObj: MoviesSearchResponseDto = response.data;
 
-  async getMoviesGenresList(language: string): Promise<GenresDataDto> {
-    const response = await firstValueFrom(
-      this.httpService.get(
-        `https://api.themoviedb.org/3/genre/movie/list?language=${language}`,
-        {
-          headers: this.headersForRequest(),
-        },
-      ),
+    return await this._commonService.transformAndValidateObj(
+      MoviesSearchResponseDto,
+      moviesObj,
     );
-
-    const moviesGenresData = plainToInstance(GenresDataDto, response.data);
-    const errors = await validate(moviesGenresData);
-    if (errors.length > 0) {
-      const errorMessages = this.formatValidationErrors(errors);
-      throw new BadRequestException(`Validation failed: ${errorMessages}`);
-    }
-    return moviesGenresData;
-  }
-
-  async getCountriesList(language: string): Promise<CountryItemDto[]> {
-    const response = await firstValueFrom(
-      this.httpService.get(
-        `https://api.themoviedb.org/3/configuration/countries?language=${language}`,
-        {
-          headers: this.headersForRequest(),
-        },
-      ),
-    );
-
-    const data: CountryItemDto[] = response.data;
-    const countriesList = plainToInstance(CountryItemDto, data);
-
-    const allErrors = [];
-    for (const country of countriesList) {
-      const countryErrors = await validate(country);
-      if (countryErrors.length > 0) {
-        allErrors.push(...countryErrors);
-      }
-    }
-
-    if (allErrors.length > 0) {
-      const errorMessages = this.formatValidationErrors(allErrors);
-      throw new BadRequestException(`Validation failed: ${errorMessages}`);
-    }
-
-    return countriesList;
   }
 }

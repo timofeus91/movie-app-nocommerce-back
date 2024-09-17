@@ -13,15 +13,33 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<ExpressResponse>();
+
     const status =
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    const message =
-      exception instanceof HttpException
-        ? (exception.getResponse() as any).message || 'An error occurred'
-        : (exception as Error).message || 'An unexpected error occurred';
+    let message: string | string[] = 'An unexpected error occurred';
+
+    if (exception instanceof HttpException) {
+      const responseError = exception.getResponse();
+
+      if (
+        responseError &&
+        typeof responseError === 'object' &&
+        'message' in responseError
+      ) {
+        message = (responseError as any).message;
+      } else if (typeof responseError === 'string') {
+        message = responseError;
+      }
+    } else if (exception instanceof Error) {
+      message = exception.message;
+    }
+
+    if (Array.isArray(message)) {
+      message = message.join('; ');
+    }
 
     response.status(status).json({
       statusCode: status,

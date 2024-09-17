@@ -3,18 +3,17 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SearchModule } from './modules/search-module/search.module';
 import { RandomizerModuleModule } from './modules/randomizer-module/randomizer-module.module';
-import { GroupRandomizerWebSocketModuleModule } from './modules/group-randomizer-web-socket-module/group-randomizer-web-socket-module.module';
 import { MovieDbApiModule } from './modules/movie-db-api-module/movie-db-api.module';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { GeneralModule } from './modules/general-module/general.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import { CommonModule } from './modules/common-module/common.module';
 
 @Module({
   imports: [
     SearchModule,
     RandomizerModuleModule,
-    GroupRandomizerWebSocketModuleModule,
     MovieDbApiModule,
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),
@@ -23,6 +22,7 @@ import { CacheModule } from '@nestjs/cache-manager';
       ttl: 15 * 60 * 1000,
       max: 30,
     }),
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],

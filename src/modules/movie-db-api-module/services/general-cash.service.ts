@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { GeneralService } from './general.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-import { GenresDataDto } from '../dto/GenresData.dto';
-import { CountryItemDto } from '../dto/CountryItem.dto';
+import { GenresDataDto } from '../dto/genres-data.dto';
+import { CountryItemDto } from '../dto/country-item.dto';
 
 @Injectable()
 export class GeneralCashService {
