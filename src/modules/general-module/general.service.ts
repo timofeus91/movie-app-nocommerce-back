@@ -5,8 +5,8 @@ import { GeneralCashService } from '../movie-db-api-module/services/general-cash
 export class GeneralService {
   constructor(private genresCashService: GeneralCashService) {}
 
-  async getGenresSeries(language: string) {
-    return await this.genresCashService.getSeriesGenresFromCache(language);
+  async getGenresTV(language: string) {
+    return await this.genresCashService.getTVGenresFromCache(language);
   }
 
   async getGenresMovies(language: string) {

@@ -2,35 +2,40 @@ import {
   IsBoolean,
   IsDateString,
   IsInt,
-  IsNumber,
   IsOptional,
   IsString,
+  IsNumber,
+  Matches,
 } from 'class-validator';
 
-export class MovieSearchDto {
+export class TVSearchDto {
   @IsOptional()
-  @IsString()
-  certification?: string;
+  @IsDateString()
+  air_date_gte?: string;
 
   @IsOptional()
-  @IsString()
-  certification_gte?: string;
+  @IsDateString()
+  air_date_lte?: string;
 
   @IsOptional()
-  @IsString()
-  certification_lte?: string;
+  @IsInt()
+  first_air_date_year?: number;
 
   @IsOptional()
-  @IsString()
-  certification_country?: string;
+  @IsDateString()
+  first_air_date_gte?: string;
+
+  @IsOptional()
+  @IsDateString()
+  first_air_date_lte?: string;
 
   @IsOptional()
   @IsBoolean()
-  include_adult?: boolean;
+  include_adult?: boolean = false;
 
   @IsOptional()
   @IsBoolean()
-  include_video?: boolean;
+  include_null_first_air_dates?: boolean = false;
 
   @IsOptional()
   @IsString()
@@ -38,35 +43,19 @@ export class MovieSearchDto {
 
   @IsOptional()
   @IsInt()
-  page?: number;
+  page?: number = 1;
 
   @IsOptional()
-  @IsInt()
-  primary_release_year?: number;
-
-  @IsOptional()
-  @IsDateString()
-  primary_release_date_gte?: string;
-
-  @IsOptional()
-  @IsDateString()
-  primary_release_date_lte?: string;
-
-  @IsOptional()
-  @IsString()
-  region?: string;
-
-  @IsOptional()
-  @IsDateString()
-  release_date_gte?: string;
-
-  @IsOptional()
-  @IsDateString()
-  release_date_lte?: string;
+  @IsBoolean()
+  screened_theatrically?: boolean;
 
   @IsOptional()
   @IsString()
   sort_by?: string;
+
+  @IsOptional()
+  @IsString()
+  timezone?: string;
 
   @IsOptional()
   @IsNumber()
@@ -77,11 +66,11 @@ export class MovieSearchDto {
   vote_average_lte?: number;
 
   @IsOptional()
-  @IsInt()
+  @IsNumber()
   vote_count_gte?: number;
 
   @IsOptional()
-  @IsInt()
+  @IsNumber()
   vote_count_lte?: number;
 
   @IsOptional()
@@ -90,15 +79,7 @@ export class MovieSearchDto {
 
   @IsOptional()
   @IsString()
-  with_cast?: string;
-
-  @IsOptional()
-  @IsString()
   with_companies?: string;
-
-  @IsOptional()
-  @IsString()
-  with_crew?: string;
 
   @IsOptional()
   @IsString()
@@ -109,20 +90,16 @@ export class MovieSearchDto {
   with_keywords?: string;
 
   @IsOptional()
+  @IsInt()
+  with_networks?: number;
+
+  @IsOptional()
   @IsString()
   with_origin_country?: string;
 
   @IsOptional()
   @IsString()
   with_original_language?: string;
-
-  @IsOptional()
-  @IsString()
-  with_people?: string;
-
-  @IsOptional()
-  @IsString()
-  with_release_type?: string;
 
   @IsOptional()
   @IsInt()
@@ -134,6 +111,17 @@ export class MovieSearchDto {
 
   @IsOptional()
   @IsString()
+  @Matches(/^(0|1|2|3|4|5)$/, {
+    message: 'with_status must be one of [0, 1, 2, 3, 4, 5]',
+  })
+  with_status?: string;
+
+  @IsOptional()
+  @IsString()
+  @Matches(/^(flatrate|free|ads|rent|buy)(,|$)/, {
+    message:
+      'with_watch_monetization_types must be one of [flatrate, free, ads, rent, buy] and can be comma or pipe separated',
+  })
   with_watch_monetization_types?: string;
 
   @IsOptional()
@@ -157,6 +145,9 @@ export class MovieSearchDto {
   without_watch_providers?: string;
 
   @IsOptional()
-  @IsInt()
-  year?: number;
+  @IsString()
+  @Matches(/^(0|1|2|3|4|5|6)$/, {
+    message: 'with_type must be one of [0, 1, 2, 3, 4, 5, 6]',
+  })
+  with_type?: string;
 }

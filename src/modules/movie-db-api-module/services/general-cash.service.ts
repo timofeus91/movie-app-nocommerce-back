@@ -12,8 +12,8 @@ export class GeneralCashService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
-  async getSeriesGenresFromCache(language: string) {
-    const cacheKey = `series-genres-${language}`;
+  async getTVGenresFromCache(language: string) {
+    const cacheKey = `tv-genres-${language}`;
 
     const cachedSeriesGenres = await this.cacheManager.get<GenresDataDto>(
       cacheKey,

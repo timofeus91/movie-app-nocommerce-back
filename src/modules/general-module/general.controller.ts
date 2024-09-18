@@ -20,7 +20,7 @@ export class GeneralController {
   async getGenresSeries(
     @Query(QUERY_PARAMS.QUERY_PARAM_LANGUAGE) language: string,
   ) {
-    return await this.generalService.getGenresSeries(language);
+    return await this.generalService.getGenresTV(language);
   }
 
   @Get('series-movies')
