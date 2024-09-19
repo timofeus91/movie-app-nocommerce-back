@@ -3,7 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { CommonService } from '../../common-module/common.service';
 import { firstValueFrom } from 'rxjs';
 import { TVSearchDto } from '../../common-module/dto/tv-search.dto';
-import { TVSearchResponseDto } from '../../search-module/dto/tv-search-response.dto';
+import { TVSearchResponseDto } from '../dto/tv-search-response.dto';
 
 @Injectable()
 export class TVService {
