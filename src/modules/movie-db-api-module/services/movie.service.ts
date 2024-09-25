@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { GenresDataDto } from '../dto/genres-data.dto';
 import { firstValueFrom } from 'rxjs';
 import { CommonService } from '../../common-module/common.service';
 import { MovieSearchDto } from '../../common-module/dto/movie-search.dto';
 import { MoviesSearchResponseDto } from '../dto/movies-search-response.dto';
-import { SimilarSearchDto } from "../../common-module/dto/similar-search.dto";
+import { SimilarSearchDto } from '../../common-module/dto/similar-search.dto';
 
 @Injectable()
 export class MovieService {
@@ -31,8 +30,9 @@ export class MovieService {
     );
   }
 
-
-  async getSimilarList(params: SimilarSearchDto): Promise<MoviesSearchResponseDto> {
+  async getSimilarList(
+    params: SimilarSearchDto,
+  ): Promise<MoviesSearchResponseDto> {
     const finalParams = this._commonService.cleanObject(params);
     const response = await firstValueFrom(
       this.httpService.get(`https://api.themoviedb.org/3/movie/6/similar`, {

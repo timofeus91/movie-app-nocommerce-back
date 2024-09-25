@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SearchModule } from './modules/search-module/search.module';
-import { RandomizerModuleModule } from './modules/randomizer-module/randomizer-module.module';
+import { RandomizerModule } from './modules/randomizer-module/randomizer.module';
 import { MovieDbApiModule } from './modules/movie-db-api-module/movie-db-api.module';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -13,7 +13,7 @@ import { CommonModule } from './modules/common-module/common.module';
 @Module({
   imports: [
     SearchModule,
-    RandomizerModuleModule,
+    RandomizerModule,
     MovieDbApiModule,
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),

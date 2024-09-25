@@ -19,7 +19,7 @@ export class TVDto {
   genre_ids: number[];
 
   @IsInt()
-  id: number = 0;
+  id = 0;
 
   @IsString()
   name: string;
@@ -38,15 +38,15 @@ export class TVDto {
   overview: string;
 
   @IsNumber()
-  popularity: number = 0;
+  popularity = 0;
 
   @IsOptional()
   @IsString()
   poster_path?: string | null;
 
   @IsNumber()
-  vote_average: number = 0;
+  vote_average = 0;
 
   @IsInt()
-  vote_count: number = 0;
+  vote_count = 0;
 }

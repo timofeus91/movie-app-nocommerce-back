@@ -38,20 +38,20 @@ export class MovieSearchDto {
 
   @IsOptional()
   @IsBoolean()
-  include_adult: boolean = false;
+  include_adult = false;
 
   @IsOptional()
   @IsBoolean()
-  include_video: boolean = false;
+  include_video = false;
 
   @IsOptional()
   @IsString()
-  language: string = 'en-US';
+  language = 'en-US';
 
   @IsOptional()
   @Type(() => Number)
   @IsInt()
-  page: number = 1;
+  page = 1;
 
   @IsOptional()
   @Type(() => Number)
@@ -80,7 +80,7 @@ export class MovieSearchDto {
 
   @IsOptional()
   @IsString()
-  sort_by: string = 'popularity.desc';
+  sort_by = 'popularity.desc';
 
   @IsOptional()
   @IsNumber()
